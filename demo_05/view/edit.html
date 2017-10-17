@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>edit</title>
+    <link rel="stylesheet" type="text/css" href="/demo_05/resource/style.css">
+</head>
+<body>
+    <div class="ui-container">
+        <h2>编辑</h2>
+        <form class="ui-form">
+            <input type="hidden" name="id" value="<?=$user->id?>">
+            <div class="ui-field">
+                <label class="ui-label before">姓名：</label>
+                <input class="ui-input" type="text" name="name" value="<?=$user->name?>">
+            </div>
+            <div class="ui-field">
+                <label class="ui-label before">性别：</label>
+                <div class="ui-fields">
+                    <div class="ui-field">
+                        <input class="ui-radio" type="radio" name="sex" value="male" id="radio-3" 
+                        <?php if ($user->sex == 'male'): ?> checked="checked" <?php endif ?>>
+                        <label for="radio-3">男</label>
+                    </div>
+                    <div class="ui-field">
+                        <input class="ui-radio" type="radio" name="sex" value="female" id="radio-4"
+                        <?php if ($user->sex == 'female'): ?> checked="checked" <?php endif ?>>
+                        <label for="radio-4">女</label>
+                    </div>
+                </div>
+            </div>
+            <div class="ui-field">
+                <label class="ui-label before">年龄：</label>
+                <input class="ui-input" type="number" name="age" value="<?=$user->age?>">
+            </div>
+            <div class="ui-field">
+                <label class="ui-label before">描述：</label>
+                <input class="ui-input" type="text" name="description" value="<?=$user->description?>">
+            </div>
+            <div class="ui-field center">
+                <div class="ui-button positive" id="submit">保存</div>
+                <a href="/demo_05/index.php?controller=demo&action=list" class="ui-button negative" >取消</a>
+            </div>
+        </form>
+    </div>
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function () {
+    $('#submit').click(function () {
+        var params = $('form').serialize();
+
+        $.post('/demo_05/index.php?controller=demo&action=doEdit', params, function (response) {
+            if (response.hasOwnProperty('status') && response.status != 'ok') {
+                alert(response.message);
+                return false;
+            }
+            window.location.href = '/demo_05/index.php?controller=demo&action=list';
+        }, 'json');
+    });
+});
+</script>
+</body>
+</html>

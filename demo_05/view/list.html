@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>list</title>
+    <link rel="stylesheet" type="text/css" href="/demo_05/resource/style.css">
+</head>
+<body>
+    <div class="ui-container">
+        <h2>列表</h2>
+        <table class="ui-table border left">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>姓名</th>
+                    <th>性别</th>
+                    <th>年龄</th>
+                    <th>描述</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+            <?php foreach ($list as $row): ?>
+                <tr>
+                    <td><?=$row->id?></td>
+                    <td><?=$row->name?></td>
+                    <td><?=$row->sex?></td>
+                    <td><?=$row->age?></td>
+                    <td><?=$row->description?></td>
+                    <td>
+                        <a href="/demo_05/index.php?controller=demo&action=edit&id=<?=$row->id?>" class="ui-button positive">编辑</a>
+                        <button class="ui-button negative del" data-id="<?=$row->id?>">删除</button>
+                    </td>
+                </tr>
+            <?php endforeach ?>
+            </tbody>
+        </table>
+    </div>
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function () {
+    $('.del').click(function () {
+        var params = {};
+        params.id = $(this).data('id');
+
+        $.post('/demo_05/index.php?controller=demo&action=doDelete', params, function (response) {
+            if (response.hasOwnProperty('status') && response.status != 'ok') {
+                alert(response.message);
+                return false;
+            }
+            window.location.href = '/demo_05/index.php?controller=demo&action=list';
+        }, 'json');
+    });
+});
+</script>
+</body>
+</html>
